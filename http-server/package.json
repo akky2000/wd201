@@ -1,0 +1,16 @@
+{
+  "name": "http-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "author": "Akash Kumar <akash.202204054@tulas.edu.in.com>",
+  "license": "ISC",
+ 
+  "devDependencies": {
+    "eslint": "^8.54.0"
+    "minimist": "^1.2.8"
+  }
+}
