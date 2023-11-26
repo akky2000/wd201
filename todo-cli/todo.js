@@ -6,49 +6,36 @@ const todoList = () => {
     const markAsComplete = (index) => {
       all[index].completed = true;
     };
-  
+
     const overdue = () => {
-          // Write the date check condition here and return the array
-    // of overdue items accordingly.
-      const today = new Date();
-      return all.filter(
-        (item) => !item.completed && new Date(item.dueDate) < today
-      );
-    };
+        const today = new Date().toISOString().split("T")[0];
+        const overdueItems = all.filter((todo) => todo.dueDate < today);
+        return overdueItems;
+      };
+    
   
     const dueToday = () => {
-          // Write the date check condition here and return the array
-    // of overdue items accordingly.
-      const today = new Date();
-      return all.filter(
-        (item) => !item.completed && new Date(item.dueDate).toDateString() === today.toDateString()
-      );
+      const today = new Date().toISOString().split("T")[0];
+      return all.filter((item) => item.dueDate === today);
     };
-  
+    
     const dueLater = () => {
-          // Write the date check condition here and return the array
-    // of overdue items accordingly.
-      const today = new Date();
-      return all.filter(
-        (item) => !item.completed && new Date(item.dueDate) > today
-      );
-    };
-  
+        const today = new Date();
+        return all.filter(item => !item.completed && new Date(item.dueDate) > today);
+      }
     const toDisplayableList = (list) => {
-         // Format the To-Do list here, and return the output string
-    // as per the format given above.
+      // Format the To-Do list here, and return the output string
+      // as per the format given above.
       return list
-        .map(
-          (item) =>
-            `[${item.completed ? 'x' : ' '}] ${item.title} ${
-              item.dueDate ? formattedDate(new Date(item.dueDate)) : ''
-            }`
-        )
-        .join('\n');
-    };
-  
-    const formattedDate = (d) => {
-      return d.toISOString().split('T')[0];
+        .map((item) => {
+          let checkbox = item.completed ? "[x]" : "[ ]";
+          const formattedDate =
+            item.dueDate !== new Date().toISOString().split("T")[0]
+              ? " " + item.dueDate
+              : "";
+          return `${checkbox} ${item.title}${formattedDate}`;
+        })
+        .join("\n");
     };
   
     return {
@@ -61,7 +48,7 @@ const todoList = () => {
       toDisplayableList,
     };
   };
-  
+ 
   // ####################################### #
   // DO NOT CHANGE ANYTHING BELOW THIS LINE. #
   // ####################################### #
