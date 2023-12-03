@@ -5,19 +5,19 @@ const { all, add, markAsComplete, overdue, dueToday, dueLater } = todoList();
 describe("TodoList test suites", () => {
   beforeAll(() => {
     add({
-      title: "semesterexam",
+      title: "Test todo1",
       completed: false,
       dueDate: new Date().toISOString().slice(0, 10),
     });
     add({
-      title: "exam fee pending",
+      title: "Test todo1 yesterday",
       completed: false,
       dueDate: new Date(new Date().setDate(new Date().getDate() - 1))
         .toISOString()
         .split("T")[0],
     });
     add({
-      title: "random job",
+      title: "Test todo1 tomorrow",
       completed: false,
       dueDate: new Date(new Date().setDate(new Date().getDate() + 1))
         .toISOString()
@@ -26,7 +26,7 @@ describe("TodoList test suites", () => {
   });
   test("Checks creating a new todo", () => {
     const itemCount = all.length;
-     expect(all.length).toBe(itemCount)
+    // expect(all.length).toBe(itemCount)
     add({
       title: "Test todo2",
       completed: false,
@@ -43,7 +43,7 @@ describe("TodoList test suites", () => {
 
   test("Checks retrival of overdue items", () => {
     const itemCount = overdue().length;
-    expect(overdue().length).toBe(itemCount)
+    // expect(overdue().length).toBe(itemCount)
     add({
       title: "Test todo2 yesterday",
       completed: false,
@@ -56,7 +56,7 @@ describe("TodoList test suites", () => {
 
   test("Checks retrival of dueToday items", () => {
     const itemCount = dueToday().length;
-     expect(dueToday().length).toBe(itemCount)
+    // expect(dueToday().length).toBe(itemCount)
     add({
       title: "Test todo3",
       completed: false,
@@ -67,7 +67,7 @@ describe("TodoList test suites", () => {
 
   test("Checks retrival of dueLater items", () => {
     const itemCount = dueLater().length;
-     expect(dueLater().length).toBe(itemCount)
+    // expect(dueLater().length).toBe(itemCount)
     add({
       title: "Test todo2 tomorrow",
       completed: false,
