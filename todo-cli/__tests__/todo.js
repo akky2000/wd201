@@ -26,7 +26,7 @@ describe("TodoList test suites", () => {
   });
   test("Checks creating a new todo", () => {
     const itemCount = all.length;
-    // expect(all.length).toBe(itemCount)
+     expect(all.length).toBe(itemCount)
     add({
       title: "Test todo2",
       completed: false,
@@ -43,7 +43,7 @@ describe("TodoList test suites", () => {
 
   test("Checks retrival of overdue items", () => {
     const itemCount = overdue().length;
-    // expect(overdue().length).toBe(itemCount)
+    expect(overdue().length).toBe(itemCount)
     add({
       title: "Test todo2 yesterday",
       completed: false,
@@ -56,7 +56,7 @@ describe("TodoList test suites", () => {
 
   test("Checks retrival of dueToday items", () => {
     const itemCount = dueToday().length;
-    // expect(dueToday().length).toBe(itemCount)
+     expect(dueToday().length).toBe(itemCount)
     add({
       title: "Test todo3",
       completed: false,
@@ -67,7 +67,7 @@ describe("TodoList test suites", () => {
 
   test("Checks retrival of dueLater items", () => {
     const itemCount = dueLater().length;
-    // expect(dueLater().length).toBe(itemCount)
+     expect(dueLater().length).toBe(itemCount)
     add({
       title: "Test todo2 tomorrow",
       completed: false,
