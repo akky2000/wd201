@@ -7,8 +7,49 @@
     <meta name="csrf-token" content="<%= csrfToken %>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="./css/styles.css" rel="stylesheet"> 
-    <title>index</title>
-   
+    <title>Document</title>
+    <script>
+        var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        function updateTodo(id)
+        {
+            // console.log('/todos/${id}/markAsCompleted');
+            const currentStatus = document.querySelector(`.todo-check-${id}`).checked;
+            //console.log(currentStatus);
+            fetch(`/todos/${id}`, {
+                method: "put",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify({
+                    "_csrf":token,
+                    completed: currentStatus
+                })
+
+            })
+            .then((res) =>
+            {
+                window.location.reload();
+            })
+            .catch((err) => console.error(err));
+        }
+
+        function deleteTodo(id)
+        {
+            fetch(`/todos/${id}`,{
+                method:"delete",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({
+                    "_csrf":token
+                })
+            })
+            .then((res) => {
+                if(res.ok){
+                    window.location.reload();
+                }
+            })
+            .catch((err)=>console.error(err))
+        }
+    </script>
 </head>
 <body>
     <div class="grid grid-cols-6">
@@ -27,9 +68,7 @@
                 
                 
                     <div class="flex-none">
-                        <button type="submit" class="bg-green-500 text-white px-5 py-2 rounded font-medium mr-2 py1.5">
-                           Add
-                        </button>
+                        <button type="submit" class="bg-green-500 text-white px-5 py-2 rounded font-medium mr-2 py1.5">Add</button>
                     </div>
                 </div>
                 
