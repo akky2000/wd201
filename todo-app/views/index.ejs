@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<%= csrfToken %>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="./css/styles.css" rel="stylesheet"> 
+    <link href="styles.css" rel="stylesheet"> 
     <title>Document</title>
     <script>
         var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
@@ -68,7 +68,10 @@
                 
                 
                     <div class="flex-none">
-                        <button type="submit" class="bg-green-500 text-white px-5 py-2 rounded font-medium mr-2 py1.5">Add</button>
+                        <button type="submit" class="bg-green-500 text-white px-5 py-2 rounded font-medium mr-2 py1.5">
+                          Add 
+                        </button>
+
                     </div>
                 </div>
                 
@@ -76,14 +79,14 @@
                 
             </form>
             <div>
-                <%- include('todo.ejs', {title: "Overdue", data: overdue}) %>
-                <%- include('todo.ejs', {title: "Due Today", data: dueToday}) %>
-                <%- include('todo.ejs', {title: "Due Later", data: dueLater}) %>
-                <%- include('todo.ejs', {title: "Completed Items", data: completedItems}) %>
+                <%- include('todos.ejs', {title: "Overdue", data: overdue}) %>
+                <%- include('todos.ejs', {title: "Due Today", data: dueToday}) %>
+                <%- include('todos.ejs', {title: "Due Later", data: dueLater}) %>
+                <%- include('todos.ejs', {title: "Completed Items", data: completedItems}) %>
             </div>
            
             
-            <!-- <%- include('footer.ejs') %> -->
+            
         </div>
     </div>
     
