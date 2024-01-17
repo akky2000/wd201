@@ -1,90 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> My To-do </title>
-</head>
-
-<body>
-    <h1>Due-Today</h1>
-    <table style="border-color: red; border: 1px solid; width: 50;">
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Due Date</th>
-            <th>Status</th>
-        </tr>
-        <% for (var i=0; i < todos.length; i++) { %>
-            <tr>
+<table>
+    <% for(var i = 0; i < allTodos.length ;i++){ %>
+            <tr> 
                 <td>
-                    <%= todos[i].id %>
-                </td>
-                <td>
-                    <%= todos[i].title %>
-                </td>
-                <td>
-                    <%= todos[i].dueDate %>
-                </td>
-                <td>
-                    <%= todos[i].completed ? true : false %>
+                    <%= allTodos[i].title %>
                 </td>
             </tr>
-            <% } %>
-    </table>
-    <h1>Overdue</h1>
-    <table style="border-color: #8c8a9e; border: 1px solid; width: 50;">
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Due Date</th>
-            <th>Status</th>
-        </tr>
-        <% for (var i=0; i < todos.length; i++) { %>
-            <tr>
-                <td>
-                    <%= todos[i].id %>
-                </td>
-                <td>
-                    <%=  todos[i].title %>
-                </td>
-                <td>
-                    <%= todos[i].dueDate %>
-                </td>
-                <td>
-                    <%= todos[i].completed ? true : false %>
-                </td>
-            </tr>
-            <% } %>
-    </table>
-    <h1>Due-Later</h1>
-    <table style="border-color: red; border: 1px solid; width: 50;">
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Due Date</th>
-            <th>Status</th>
-        </tr>
-        <% for (var i=0; i < todos.length; i++) { %>
-            <tr>
-                <td>
-                    <%= todos[i].id %>
-                </td>
-                <td>
-                    <%= todos[i].title %>
-                </td>
-                <td>
-                    <%= todos[i].dueDate %>
-                </td>
-                <td>
-                    <%= todos[i].completed ? true : false %>
-                </td>
-            </tr>
-            <% } %>
-    </table>
-</body>
-
-
-
-</html>
+    <% } %>
+</table>
