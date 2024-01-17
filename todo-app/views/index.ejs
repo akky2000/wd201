@@ -93,10 +93,7 @@
                 </li>
             </ul>
         </div> 
-       <%- include ( 'todos.ejs', { allTodos: overdue, title: 'OverDue' }) %>
-        <%- include ('todos.ejs', { allTodos: duetoday, title: 'Due Today' }) %>
-        <%- include ('todos.ejs', { allTodos: duelater, title: 'Due Later' }) %> 
-       
+      
         <%- include('todos.ejs', { overdue, duetoday, duelater}) %>
         <%- include("footer.ejs") %> 
         </div>
