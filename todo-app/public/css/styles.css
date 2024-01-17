@@ -1,5 +1,11 @@
+
+
+
 body{
-    color:grey;
-    /* background-color: green; */
-    font-family: 'Courier New', Courier, monospace;
+    background-color: gray;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.Todo-item:hover .trash-icon {
+    display:block ;
+
 }
