@@ -8,19 +8,39 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json())
 
 app.set('view engine', 'ejs')
-app.get('/', async function (request, response) {
-  const allTodos = await Todo.getTodos()
-  const duetoday = await Todo.dueToday()
-  const overdue = await Todo.overDue()
-  const duelater = await Todo.dueLater()
-  // const completeditem = await Todo.completedItems()
 
-  if (request.accepts('html')) {
-    response.render('index', { allTodos, duetoday, overdue, duelater })
-  } else {
-    response.json({ allTodos, duetoday, overdue, duelater })
+app.get("/todos", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+  try {
+    const allTodos = await Todo.getTodos();
+    const loggedInUser = request.user.id;
+    const overdueTodos = await Todo.isOverdue(loggedInUser);
+    const dueTodayTodos = await Todo.isDueToday(loggedInUser);
+    const dueLaterTodos = await Todo.isDueLater(loggedInUser);
+    const completed = await Todo.isCompleted(loggedInUser);
+
+    if (request.accepts("html")) {
+      response.render('todos.ejs', {
+        allTodos,
+        overdueTodos,
+        dueTodayTodos,
+        dueLaterTodos,
+        completed,
+        csrfToken: request.csrfToken(),
+      });
+    } else {
+      response.json({
+        allTodos,
+        overdueTodos,
+        dueTodayTodos,
+        dueLaterTodos
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    response.status(404).json({ error: "rendering Error" });
   }
-})
+});
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.get('/todos', async function (_request, response) {
   try {
