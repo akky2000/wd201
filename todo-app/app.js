@@ -5,103 +5,89 @@ const { Todo } = require("./models");
 const path = require("path");
 const bodyParser = require("body-parser");
 
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
-app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "public")));
+app.set('view engine', 'ejs')
+app.get('/', async function (request, response) {
+  const allTodos = await Todo.getTodos()
+  const duetoday = await Todo.dueToday()
+  const overdue = await Todo.overDue()
+  const duelater = await Todo.dueLater()
+  // const completeditem = await Todo.completedItems()
 
-app.get("/", async (request, response) => {
-  try {
-    const overdue = await Todo.getOverdueTodos();
-    const duetoday = await Todo.getDueTodayTodos();
-    const duelater = await Todo.getDueLaterTodos();
-
-    if (request.accepts("html")) {
-      response.render("index.ejs", {
-        overdue,
-        duetoday,
-        duelater,
-      });
-    } else {
-      response.json({
-        overdue,
-        duetoday,
-        duelater,
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    response.status(500).json({ error: "Internal Server Error" });
+  if (request.accepts('html')) {
+    response.render('index', { allTodos, duetoday, overdue, duelater })
+  } else {
+    response.json({ allTodos, duetoday, overdue, duelater })
   }
-});
-
-app.get("/", function (request, response) {
-  response.send("Hello World");
-});
-
-app.get("/todos", async function (_request, response) {
-  console.log("Processing list of all Todos ...");
+})
+app.use(express.static(path.join(__dirname, 'public')))
+app.get('/todos', async function (_request, response) {
   try {
-    const todos = await Todo.findAll();
-    response.send(todos);
+    console.log('Processing list of all Todos ...')
+    // FILL IN YOUR CODE HERE
+
+    // First, we have to query our PostgerSQL database using Sequelize to get list of all Todos.
+    // Then, we have to respond with all Todos, like:
+    // response.send(todos)
+    const todos = await Todo.findAll()
+    response.send(todos)
   } catch (error) {
-    console.error(error);
-    response.status(500).json({ error: "Internal Server Error" });
+    console.log(error)
+    return response.status(422).json(error)
   }
-});
+})
 
-app.get("/todos/:id", async function (request, response) {
+app.get('/todos/:id', async function (request, response) {
   try {
-    const todo = await Todo.findByPk(request.params.id);
-    return response.json(todo);
+    const todo = await Todo.findByPk(request.params.id)
+    return response.json(todo)
   } catch (error) {
-    console.error(error);
-    return response.status(422).json(error);
+    console.log(error)
+    return response.status(422).json(error)
   }
-});
+})
 
-app.post("/todos", async function (request, response) {
+app.post('/todos', async function (request, response) {
   try {
-    const todo = await Todo.addTodo(request.body);
-    return response.json(todo);
+    const todo = await Todo.addTodo(request.body)
+    return response.json(todo)
   } catch (error) {
-    console.error(error);
-    return response.status(422).json(error);
+    console.log(error)
+    return response.status(422).json(error)
   }
-});
+})
 
-app.put("/todos/:id/markAsCompleted", async function (request, response) {
-  const todo = await Todo.findByPk(request.params.id);
+app.put('/todos/:id/markAsCompleted', async function (request, response) {
+  const todo = await Todo.findByPk(request.params.id)
   try {
-    const updatedTodo = await todo.markAsCompleted();
-    return response.json(updatedTodo);
+    const updatedTodo = await todo.markAsCompleted()
+    return response.json(updatedTodo)
   } catch (error) {
-    console.error(error);
-    return response.status(422).json(error);
+    console.log(error)
+    return response.status(422).json(error)
   }
-});
+})
 
-app.delete("/todos/:id", async function (request, response) {
-  console.log("We have to delete a Todo with ID: ", request.params.id);
+app.delete('/todos/:id', async function (request, response) {
+  // FILL IN YOUR CODE HERE
+
+  // First, we have to query our database to delete a Todo by ID.
+  // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
+  // response.send(true)
   try {
-    if (await Todo.findByPk(request.params.id)) {
-      await Todo.destroy({
-        where: {
-          id: request.params.id,
-        },
-      });
-      if (await Todo.findByPk(request.params.id)) {
-        response.send(false);
-      } else {
-        response.send(true);
+    console.log('We have to delete a Todo with ID: ', request.params.id)
+    const Itemdeleted = await Todo.destroy({
+      where: {
+        id: request.params.id
       }
-    } else {
-      response.send(false);
-    }
+    })
+    // eslint-disable-next-line no-unneeded-ternary
+    response.send(Itemdeleted ? true : false)
   } catch (error) {
-    console.error(error);
-    response.status(500).json({ error: "Internal Server Error" });
+    console.log(error)
+    return response.status(422).json(error)
   }
-});
+})
 
-module.exports = app;
+module.exports = app
