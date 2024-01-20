@@ -5,7 +5,7 @@ const { Todo } = require("./models");
 const path = require("path");
 const bodyParser = require("body-parser");
 app.use(express.urlencoded({extended: false}));
-const path = require('path');
+
 
 app.use(bodyParser.json());
 app.use(cookieParser('ssh!!!! some secret string'));
