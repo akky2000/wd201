@@ -25,8 +25,7 @@ app.get("/todos", connectEnsureLogin.ensureLoggedIn(), async (request, response)
         overdueTodos,
         dueTodayTodos,
         dueLaterTodos,
-        completed,
-        csrfToken: request.csrfToken(),
+      
       });
     } else {
       response.json({
