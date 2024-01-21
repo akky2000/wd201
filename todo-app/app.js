@@ -25,7 +25,7 @@ app.get("/", async (request, response) => {
         allTodos,
          overdue: overdueTodos,
                duetoday:dueTodayTodos,
-        dueLaterTodos,
+         duelater: dueLaterTodos,
       
       });
     } else {
