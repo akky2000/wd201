@@ -1,71 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+<section>
+  <h5>Overdue (<span id="count-overdue"><%= overdue.length %></span>)</h5>
+  <ul>
+    <% overdue.forEach(todo => { %>
+      <li><%= todo.title %></li>
+    <% }); %>
+  </ul>
+</section>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<section>
+  <h5>Due Today (<span id="count-duetoday"><%= duetoday.length %></span>)</h5>
+  <ul>
+    <% duetoday.forEach(todo => { %>
+      <li><%= todo.title %></li>
+    <% }); %>
+  </ul>
+</section>
 
-<body>
-
-    <div class="mx-auto">
-    <h5 class="text-xl font-bold">Overdue <span id="count-overdue" > <%= overdue.length %> </span></h5>
-    <div>
-        <% overdue.forEach(todo => { %>
-            <div class="flex items-center w-fit my-2 px-2 py-1 hover:bg-sky-300">
-                <input id="todo-checkbox-<%= todo.dataValues.id %>" type="checkbox" class="w-5 h-5 p-3 rounded-full border-4 border-black cursor-pointer">
-                <label for="todo-checkbox-<%= todo.dataValues.id %>" class="ml-2 text-l text-white cursor-pointer"><%= todo.dataValues.title %>
-                </label>
-                <a href="#" class="hidden trash-icon  ml-2" >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                      </svg>
-                      
-                </a>
-            </div>
-             <% }); %>
-    </div>
-
-    
-
-    <div class="mx-auto">
-        <h5 class="text-xl font-bold">Due Today <span id="count-due-today"><%= duetoday.length %></span></h5>
-        <div>
-            <% duetoday.forEach(todo => { %>
-                <div class="flex items-center w-fit my-2 px-2 py-1 hover:bg-sky-300">
-                    <input id="todo-checkbox-<%= todo.dataValues.id %>" type="checkbox" class="w-5 h-5 p-3 rounded-full border-4 border-black cursor-pointer">
-                    <label for="todo-checkbox-<%= todo.dataValues.id %>" class="ml-2 text-l text-white cursor-pointer"><%= todo.dataValues.title %></label>
-                    <a href="#" class="hidden trash-icon  ml-2" >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                          </svg>
-                          
-                    </a>
-                </div>
-           <% }) %>
-        </div>
-    </div>
-
-
-   
-    </div>  <div class="mx-auto">
-        <h5 class="text-xl font-bold">Due Later <span id="count-due-today"><%= duelater.length %></span></h5>
-        <div>
-            <% duelater.forEach(todo => { %>
-                <div class="flex items-center w-fit my-2 px-2 py-1 hover:bg-sky-300">
-                    <input id="todo-checkbox-<%= todo.dataValues.id %>" type="checkbox" class="w-5 h-5 p-3 rounded-full border-4 border-black cursor-pointer">
-                    <label for="todo-checkbox-<%= todo.dataValues.id %>" class="ml-2 text-l text-white cursor-pointer"><%= todo.dataValues.title %></label>
-                    <a href="#" class="hidden trash-icon  ml-2" >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                          </svg>
-                          
-                    </a>
-                </div>
-            })
-        </div>
-    </div>
-
-   
-</body>
+<section>
+  <h5>Due Later (<span id="count-duelater"><%= duelater.length %></span>)</h5>
+  <ul>
+    <% duelater.forEach(todo => { %>
+      <li><%= todo.title %></li>
+    <% }); %>
+  </ul>
+</section>
