@@ -21,7 +21,7 @@ app.get("/", async (request, response) => {
    
 
     if (request.accepts("html")) {
-      response.render('index.ejs', {
+      response.render('index.ejs', 'todos.ejs'{
         allTodos,
          overdue: overdueTodos,
                duetoday:dueTodayTodos,
