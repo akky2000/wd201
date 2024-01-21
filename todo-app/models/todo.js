@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll();
     }
 
-    static async Overdue() {
+    static async getOverdueTodos() {
       return await Todo.findAll({
         where: {
           dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static async dueToday() {
+    static async getDueTodayTodos() {
       // FILL IN HERE TO RETURN ITEMS DUE tODAY
       return await Todo.findAll({
         where: {
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static async dueLater() {
+    static async getDueLaterTodos() {
       // FILL IN HERE TO RETURN ITEMS DUE LATER
       return await Todo.findAll({
         where: {
