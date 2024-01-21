@@ -15,7 +15,7 @@ app.get("/", async (request, response) => {
   try {
  
     const allTodos = await Todo.getTodos();
-    const overdueTodos = await Todo.isOverdue();
+    const overdue = await Todo.isOverdue();
     const dueTodayTodos = await Todo.isDueToday();
     const dueLaterTodos = await Todo.isDueLater();
    
