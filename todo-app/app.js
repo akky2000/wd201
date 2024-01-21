@@ -23,7 +23,7 @@ app.get("/", async (request, response) => {
     if (request.accepts("html")) {
       response.render('index.ejs',{
         allTodos,
-        overdueTodos,
+        overdue,
                duetoday:dueTodayTodos,
          duelater: dueLaterTodos,
       
