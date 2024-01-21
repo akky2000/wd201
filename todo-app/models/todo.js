@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
             completed: false,
           });
           await this.addTodo({
-            title: "Buy xbox",
+            title: "Buy pen",
             dueDate: new Date(
               new Date().setDate(new Date().getDate() - 1)
             ).toISOString(),
@@ -70,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
             completed: false,
           });
           await this.addTodo({
-            title: "Buy xbox",
+            title: "Buy pen",
             dueDate: new Date().toISOString(),
             completed: false,
           });
@@ -103,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
             completed: false,
           });
           await this.addTodo({
-            title: "Buy xbox",
+            title: "Buy pen",
             dueDate: tomorrow.toISOString(),
             completed: false,
           });
@@ -126,7 +126,7 @@ module.exports = (sequelize, DataTypes) => {
           completed: false,
         });
         await this.addTodo({
-          title: "Buy xbox",
+          title: "Buy pen",
           dueDate: new Date().toISOString(),
           completed: false,
         });
