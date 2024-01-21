@@ -4,7 +4,7 @@
     <div class="my-4 w-full">
         <% overdue.forEach(todo => { %>
             <div class="Todo-Item flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50 ml-5">
-                <input id="todo-checkbox-<%= todo.dataValues.id %>" type="checkbox" <%= todo.dataValues.completed? "checked" : " " %> onclick="updateTodo(<%= todo.dataValues.id %>)" class="w-4 h-4 text-blue-600 bg-gray rounded border-gray-300">
+                <input id="todo-checkbox-<%= todo.dataValues.id %>" type="checkbox" <%= todo.dataValues.completed?'checked="checked"' : " " %> onclick="updateTodo(<%= todo.dataValues.id %>)" class="w-4 h-4 text-blue-600 bg-gray rounded border-gray-300">
                 <label for="todo-checkbox-<%= todo.dataValues.id %>" class="ml-2 text-sm cursor-pointer text-gray-900">
                     <%= todo.dataValues.title %>
                 </label>
