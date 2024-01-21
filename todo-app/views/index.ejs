@@ -15,7 +15,7 @@
         <div class="col-start-3 col-span-2">
             <%- include('header.ejs') %>
             <form action="/todos" method="post">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+               
                 <div class="flex gap-2 py-4">
                     <div class="flex-auto">
                         <input type="text" name="title" placeholder="whats next?" class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm" required />
@@ -38,11 +38,11 @@
                 <%- include('todos.ejs', {title: "Overdue", data: overdue}) %>
                 <%- include('todos.ejs', {title: "Due Today", data: dueToday}) %>
                 <%- include('todos.ejs', {title: "Due Later", data: dueLater}) %>
-                <%- include('todos.ejs', {title: "Completed Items", data: completedItems}) %>
+               
             </div>
            
             
-            <!-- <%- include('footer.ejs') %> -->
+          
         </div>
     </div>
     
