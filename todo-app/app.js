@@ -11,6 +11,8 @@ app.get("/todos", function (request, response) {
 });
 app.set("view engine", "ejs");
 
+app.get("/", async (request, response) => {
+  try {
  
     const allTodos = await Todo.getTodos();
     const overdueTodos = await Todo.isOverdue();
