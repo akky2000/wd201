@@ -11,29 +11,32 @@ app.get("/todos", function (request, response) {
 });
 app.set("view engine", "ejs");
 
-app.get("/", async (request, response) => {
-  try {
-    const allTodos = await Todo.getTodos();
-  const overdue = await Todo.overdue();
-  const dueToday = await Todo.dueToday();
-  const dueLater = await Todo.dueLater();
+ const allTodos = await Todo.getTodos();
+   
+    const overdueTodos = await Todo.isOverdue();
+    const dueTodayTodos = await Todo.isDueToday();
+    const dueLaterTodos = await Todo.isDueLater();
+   
 
     if (request.accepts("html")) {
-      response.render("index.ejs", {
-        overdue,
-        dueToday,
-        dueLater,
+      response.render('todos.ejs', {
+        allTodos,
+        overdueTodos,
+        dueTodayTodos,
+        dueLaterTodos,
+      
       });
     } else {
       response.json({
-        Overdue,
-        dueToday,
-        duelLater,
+        allTodos,
+        overdueTodos,
+        dueTodayTodos,
+        dueLaterTodos
       });
     }
   } catch (error) {
     console.error(error);
-    response.status(500).json({ error: "Internal Server Error" });
+    response.status(404).json({ error: "rendering Error" });
   }
 });
 
