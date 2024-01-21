@@ -1,100 +1,79 @@
-/* eslint-disable comma-dangle */
-/* eslint-disable semi */
-/* eslint-disable quotes */
-const express = require("express");
+/* eslint-disable no-unused-vars */
+const {request, response} = require('express');
+const express = require('express');
 const app = express();
-const { Todo } = require("./models");
-const bodyParser = require("body-parser");
-const path = require("path");
+const csrf = require('tiny-csrf');
+
+const {Todo} = require('./models');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
+app.use(express.urlencoded({extended: false}));
+const path = require('path');
+
 app.use(bodyParser.json());
+app.use(cookieParser('ssh!!!! some secret string'));
+app.use(csrf('this_should_be_32_character_long', ['POST', 'PUT', 'DELETE']));
 
-app.set("view engine", "ejs");
-app.get("/", async (request, response) => {
-  try {
-    const overdue = await Todo.getOverdueTodos();
-    const duetoday = await Todo.getDueTodayTodos();
-    const duelater = await Todo.getDueLaterTodos();
 
-    if (request.accepts("html")) {
-      response.render("index.ejs", {
-        overdue,
-        duetoday,
-        duelater,
-      });
-    } else {
-      response.json({
-        overdue,
-        duetoday,
-        duelater,
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    response.status(500).json({ error: "Internal Server Error" });
+// seting the ejs is the engine
+app.set('view engine', 'ejs');
+
+app.get('/', async (request, response)=>{
+  const allTodos = await Todo.getTodos();
+  const overdue = await Todo.overdue();
+  const dueToday = await Todo.dueToday();
+  const dueLater = await Todo.dueLater();
+  const completedItems = await Todo.completedItems();
+  if (request.accepts('html')) {
+    response.render('index', {
+      allTodos, overdue, dueToday, dueLater, completedItems,
+      csrfToken: request.csrfToken(),
+    });
+  } else {
+    response.json({allTodos, overdue, dueToday, dueLater});
   }
 });
 
-app.use(express.static(path.join(__dirname, "public")));
-app.get("/", function (request, response) {
-  response.send("Hello World");
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/todos", async function (_request, response) {
-  console.log("Processing list of all Todos ...");
-  try {
-    const todos = await Todo.findAll();
-    return response.send(todos);
-  } catch (err) {
-    console.log(err);
-    return response.status(422).json(err);
-  }
+app.get('/todos', (request, response)=>{
+  console.log('Todo List', request.body);
 });
-
-app.get("/todos/:id", async function (request, response) {
+app.post('/todos', async (request, response)=>{
+  console.log('Todo List');
   try {
-    const todo = await Todo.findByPk(request.params.id);
-    return response.json(todo);
+    console.log('entering in try block');
+    const todo =await Todo.addTodo({
+      title: request.body.title, dueDate: request.body.dueDate,
+    });
+    return response.redirect('/');
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
   }
 });
 
-app.post("/todos", async function (request, response) {
-  try {
-    const todo = await Todo.addTodo(request.body);
-    return response.json(todo).status(200);
-  } catch (error) {
-    console.log(error);
-    return response.status(422).json(error);
-  }
-});
-
-app.put("/todos/:id/markAsCompleted", async function (request, response) {
+app.put('/todos/:id', async (request, response) => {
   const todo = await Todo.findByPk(request.params.id);
   try {
-    const updatedTodo = await todo.markAsCompleted();
-    return response.json(updatedTodo).status(200);
+    const upTodo = await todo.setCompletionStatus(request.body.completed);
+    return response.json(upTodo);
   } catch (error) {
-    console.log(error);
     return response.status(422).json(error);
   }
 });
 
-app.delete("/todos/:id", async function (request, response) {
-  console.log("We have to delete a Todo with ID: ", request.params.id);
-  const todo = await Todo.findByPk(request.params.id);
-  try {
-    if (todo) {
-      todo.destroy();
-      return response.send(true);
-    } else {
-      return response.send(false);
-    }
-  } catch (error) {
-    console.log(error);
-    return response.status(422).json(error);
-  }
+app.delete('/todos/:id', async function(request, response) {
+  console.log('We have to delete a Todo with ID: ', request.params.id);
+  // FILL IN YOUR CODE HERE
+
+  // First, we have to query our database to delete a Todo by ID.
+  // eslint-disable-next-line max-len
+  // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
+  // response.send(true)
+  const deleteFlag = await Todo.destroy({where: {id: request.params.id}});
+  response.send(deleteFlag ? true : false);
 });
 
 module.exports = app;
