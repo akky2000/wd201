@@ -24,7 +24,7 @@ app.get("/", async (request, response) => {
       response.render('todos.ejs', {
         allTodos,
          overdue: overdueTodos,
-     dueTodayTodos: duetoday, 
+               duetoday:dueTodayTodos,
         dueLaterTodos,
       
       });
