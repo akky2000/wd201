@@ -11,8 +11,8 @@ app.get("/todos", function (request, response) {
 });
 app.set("view engine", "ejs");
 
- const allTodos = await Todo.getTodos();
-   
+ 
+    const allTodos = await Todo.getTodos();
     const overdueTodos = await Todo.isOverdue();
     const dueTodayTodos = await Todo.isDueToday();
     const dueLaterTodos = await Todo.isDueLater();
