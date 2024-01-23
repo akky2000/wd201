@@ -40,40 +40,67 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/todos', (request, response)=>{
   console.log('Todo List', request.body);
 });
-app.post('/todos', async (request, response)=>{
-  console.log('Todo List');
+
+app.post("/todos", async (request, response) => {
+   console.log("Creating a todo", request.body);
+   try {
+      await Todo.addTodo({
+         title: request.body.title,
+         dueDate: request.body.dueDate,
+         completed: false
+      });
+      return response.redirect("/");
+   } catch (error) {
+      console.error(error);
+      return response.status(422).json(error);
+   }
+});
+
+app.put('/todos/:id', async (req, res) => {
+  console.log("Updating a todo with ID:", req.params.id);
+
   try {
-    console.log('entering in try block');
-    const todo =await Todo.addTodo({
-      title: request.body.title, dueDate: request.body.dueDate,
-    });
-    return response.redirect('/');
+    const todoId = req.params.id;
+    const { completed } = req.body;
+
+    // Find the todo by ID
+    const todo = await Todo.findByPk(todoId);
+
+    if (!todo) {
+      return response.status(404).json({ error: 'Todo not found' });
+    }
+
+    // Update the completion status
+    await todo.update({ completed });
+
+    // Fetch the updated todo to get the latest data
+    const updatedTodo = await Todo.findByPk(todoId);
+
+    response.status(200).json({ message: 'Todo updated successfully', todo: updatedTodo });
   } catch (error) {
-    console.log(error);
-    return response.status(422).json(error);
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-app.put('/todos/:id', async (request, response) => {
-  const todo = await Todo.findByPk(request.params.id);
-  try {
-    const upTodo = await todo.setCompletionStatus(request.body.completed);
-    return response.json(upTodo);
-  } catch (error) {
-    return response.status(422).json(error);
-  }
-});
-
-app.delete('/todos/:id', async function(request, response) {
-  console.log('We have to delete a Todo with ID: ', request.params.id);
-  // FILL IN YOUR CODE HERE
-
-  // First, we have to query our database to delete a Todo by ID.
-  // eslint-disable-next-line max-len
-  // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
-  // response.send(true)
-  const deleteFlag = await Todo.destroy({where: {id: request.params.id}});
-  response.send(deleteFlag ? true : false);
-});
-
-module.exports = app;
+ app.delete('/todos/:id', async (req, res) => {
+  
+   try {
+     const todoId = req.params.id;
+ 
+     const todo = await Todo.findByPk(todoId);
+ 
+     if (!todo) {
+       return res.status(404).json({ error: 'Todo not found' });
+     }
+ 
+     await todo.destroy();
+ 
+     res.status(204).end(); // No content
+   } catch (error) {
+     console.error(error);
+     res.status(500).json({ error: 'Internal Server Error' });
+   }
+ });
+ 
+ module.exports = app;
