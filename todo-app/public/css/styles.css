@@ -1,11 +1,11 @@
 
 
 
-body{
-    background-color: gray;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+body {
+    font-family: sans-serif;
+    background: red;
 }
-.Todo-item:hover .trash-icon {
-    display:block ;
 
+.Todo-Item:hover .trash-icon {
+    display: block;
 }
