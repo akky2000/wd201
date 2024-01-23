@@ -51,9 +51,9 @@
 <body>
 <div class="grid grid-cols-6">
     <div class="col-start-3 col-span-2">
-        <!--Header Start-->
+        
         <%- include("header.ejs") %>
-        <!--Header End-->
+        
         <form action="/todos" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <div class="flex gap-2 py-4">
@@ -69,16 +69,16 @@
             </div>
         </form>
         <div>
-            <!--Todo Start-->
+            
             <%- include("todos.ejs",{title:"Overdue", Due:overDue , id:"count-overdue"}) %>
             <%- include("todos.ejs",{title:"Due Today", Due:dueToday, id:"count-due-today"}) %>
             <%- include("todos.ejs",{title:"Due Later", Due:dueLater, id:"count-due-later"}) %>
             <%- include("todos.ejs",{title:"Completed Items", Due:completeditems,id:"count-completed"}) %>
-            <!--Todo End-->
+           
         </div>
-        <!--Footer Start-->
+        
         <%- include("footer.ejs") %>
-        <!--Footer End-->
+       
     </div>
 </div>
 </body>
