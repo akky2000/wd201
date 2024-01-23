@@ -5,7 +5,7 @@
 
 <ul class="list-none">
     <% for( var i = 0; i < Due.length; i++) { %>
-    <li class="Todo-item">
+    <li class="Todo-Item">
         <div class="flex items-center w-fit my-2 px-2 py-1 hover:bg-purple-50 rounded">
             <input id="todo-checkbox-<%= Due[i].id %>" type="checkbox" <%=Due[i].completed ? "checked" : "" %> onclick="updateTodo(<%= Due[i].id %>)" class="w-4 h-4 test-blue-600 border-gray-300 ml-2">
             <label for="todo-checkbox-<%= Due[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer">
