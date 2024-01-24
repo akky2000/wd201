@@ -86,12 +86,7 @@ app.get("/", (request, response) => {
   }
 });
 
-// app.get("/", async (request, response) => {
-//   response.render('index.ejs', {
-//     title: "To-Do Application",
-//     csrfToken: request.csrfToken(),
-//   })
-// })
+
 
 
 app.use(function (request, response, next) {
@@ -149,7 +144,7 @@ app.post("/users", async (request, response) => {
       firstname: request.body.firstName,
       lastname: request.body.lastName,
       email: request.body.email,
-      password: hashedPwd
+      password: asdfghjk
 
     });
     request.login(user, (err) => {
