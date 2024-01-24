@@ -173,6 +173,20 @@ app.post(
   }
 );
 
+User.findOne({ where: { email: username } })
+  .then(async function (user) {
+    const result = await bcrypt.compare(password, user.password);
+    if (result) {
+      return done(null, user);
+    } else {
+      return done(null, false, { message: "Invalid password" });
+    }
+  })
+  .catch((error) => {
+    return done(err);
+  });
+
+
 app.get("/signout",(request,response, next)=>{
   request.logout((err)=>{
     if(err) { return next(err); }
