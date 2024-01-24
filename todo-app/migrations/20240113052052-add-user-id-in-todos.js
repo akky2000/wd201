@@ -1,39 +1,35 @@
 'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Todos', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate:{
-          notNull: true,
-          len:5,
-      }
-     },
-      dueDate: {
-        type: Sequelize.DATEONLY
-      },
-      completed: {
-        type: Sequelize.BOOLEAN
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Todos');
-  }
+    async up(queryInterface, Sequelize) {
+        await queryInterface.addColumn('Todos', 'userId', {
+            type: Sequelize.DataTypes.INTEGER
+        })
+
+        await queryInterface.addConstraint('Todos', {
+            fields: ['userId'],
+            type: 'foreign key',
+            references: {
+                table: 'Users',
+                field: 'id'
+            }
+        })
+        /**
+         * Add altering commands here.
+         *
+         * Example:
+         * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+         */
+    },
+
+    async down(queryInterface, Sequelize) {
+        await queryInterface.removeColumn('Todos', 'userId')
+        /**
+         * Add reverting commands here.
+         *
+         * Example:
+         * await queryInterface.dropTable('users');
+         */
+    }
 };
