@@ -1,37 +1,40 @@
 'use strict';
-
-const { query } = require('express');
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.addColumn('Todos','userId',{
-      type: Sequelize.DataTypes.INTEGER
-    })
-
-    await queryInterface.addConstraint('Todos',{
-      fields:['userId'],
-      type:'foreign key',
-      references:{
-        table:'Users',
-        field:'id'
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('Users', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      firstName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        type: Sequelize.STRING
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
+      password: {
+        type: Sequelize.STRING
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
   },
-
-  async down (queryInterface, Sequelize) {
-    await queryInterface.renameColumn('Todos','userId')
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('Users');
   }
 };
