@@ -42,10 +42,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+
+
 app.use(function(request, response, next) {
-  response.locals.messages = request.flash();
-  next();
+    response.locals.messages = request.flash();
+    next();
 });
+
 
 passport.use(new LocalStrategy({
   usernameField:'email',
