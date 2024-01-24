@@ -50,24 +50,29 @@ app.use(function(request, response, next) {
     next();
 });
 
-
-passport.use(new LocalStrategy({
-  usernameField:'email',
-  passwordField:'password'
-},(username,password,done)=>{
-  User.findOne({ where: { email: username } })
-  .then(async function (user) {
-    const result = await bcrypt.compare(password, user.password);
-    if (result) {
-      return done(null, user);
-    } else {
-      return done(null, false, { message: "Invalid password" });
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+    (username, password, done) => {
+      User.findOne({ where: { email: username } })
+        .then(async function (user) {
+          const result = await bcrypt.compare(password, user.password);
+          if (result) {
+            return done(null, user);
+          } else {
+            return done(null, false, { message: "Invalid password" });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          return done(null, false, { message: "Invalid account credentials" });
+        });
     }
-  })
-  .catch((error) => {
-    return done(null, false, { message: "Invalid E-mail" });
-  });
-}));
+  )
+);
 
 passport.serializeUser((user,done)=>{
   console.log("Serializing user in session",user.id)
@@ -177,18 +182,7 @@ app.post(
   }
 );
 
-User.findOne({ where: { email: username } })
-  .then(async function (user) {
-    const result = await bcrypt.compare(password, user.password);
-    if (result) {
-      return done(null, user);
-    } else {
-      return done(null, false, { message: "Invalid password" });
-    }
-  })
-  .catch((error) => {
-    return done(err);
-  });
+
 
 
 app.get("/signout",(request,response, next)=>{
