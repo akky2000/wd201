@@ -3,7 +3,7 @@
 
 body {
     font-family: sans-serif;
-    background: red;
+    background: gray;
 }
 
 .Todo-Item:hover .trash-icon {
