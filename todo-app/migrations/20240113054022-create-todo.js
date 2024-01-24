@@ -12,13 +12,17 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
+        validate: {
           notNull: true,
-          len:5,
-      }
-     },
+
+        }
+      },
       dueDate: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
+        allowNull: false,
+        validate: {
+          notNull: true
+        }
       },
       completed: {
         type: Sequelize.BOOLEAN
