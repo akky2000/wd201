@@ -63,7 +63,7 @@ passport.use(new LocalStrategy({
   .catch((error) => {
     console.error(error);
     return done(null,false,{
-      message: "Register First"
+      message: "Sign up first"
   })
 })
 }))
@@ -95,7 +95,7 @@ app.get('/', async (request, response) => {
   }
   else{
     response.render('index', {
-      title: 'To-do List',
+      title: 'To-do list',
       csrfToken: request.csrfToken(),
     });
   }
@@ -122,7 +122,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/signup', (request, response) => {
   response.render('signup', {
-    title: 'Sign Up',
+    title: 'Sign up',
     csrfToken: request.csrfToken(),
   });
 });
@@ -172,7 +172,7 @@ app.post('/users', async (request, response) => {
 
 app.get('/login',(request,response)=>{
   response.render('login',{
-    title:"Login",
+    title:"Login first",
     csrfToken: request.csrfToken(),
   });
 });
