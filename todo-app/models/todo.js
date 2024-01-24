@@ -1,91 +1,111 @@
-/* eslint-disable require-jsdoc */
-'use strict';
-const {
-  Model, Op
-} = require('sequelize');
+"use strict";
+const { Model, Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Todo extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Todo.belongsTo(models.User,{
-        foreignKey: 'userId'
-      })
-    }
-
-    static addTodo({ title, dueDate, userId}) {
-      return this.create({ title: title, dueDate: dueDate, completed: false, userId});
-    }
-
-    static getTodos() {
-      return this.findAll();
-    }
-
-    static async overdue(userId) {
-      return await Todo.findAll({
-        where: {
-          dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
-          userId,
-          completed: false,
-        },
-      });
-    }
-
-    static async dueToday(userId) {
-      // FILL IN HERE TO RETURN ITEMS DUE tODAY
-      return await Todo.findAll({
-        where: {
-          dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
-          userId,
-          completed: false,
-        },
-      });
-    }
-
-    static async dueLater(userId) {
-      // FILL IN HERE TO RETURN ITEMS DUE LATER
-      return await Todo.findAll({
-        where: {
-          dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") },
-          userId,
-          completed: false,
-        },
-      });
-    }
-
-    static async remove(id, userId) {
-      return this.destroy({
-        where: {
-          id,
-          userId,
+    class Todo extends Model {
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            Todo.belongsTo(models.User, {
+                foreignKey: 'UserId',
+            })
+            // define association here
         }
-      })
-    }
 
-    static async completedItems(userId) {
-      return this.findAll({
-        where: {
-          completed: true,
-          userId,
+        static addTodo({ title, dueDate, UserId }) {
+            return this.create({ title: title, dueDate: dueDate, completed: false, UserId });
         }
-      })
-    }
-    setCompletionStatus(receiver) {
-      return this.update({ completed: receiver });
-    }
+        static deleteTodo(id) {
+            return this.destroy({ where: { id: id } });
+        }
+        markAsCompleted() {
+            return this.update({ completed: true });
+        }
+        
+        static async setCompletionStatus(id, val, UserId) {
+            const todo = await this.findByPk(id);
+            todo.completed = val;
+            await todo.save();
+            return todo;
+        }
 
-  }
-  Todo.init({
-    title: DataTypes.STRING,
-    dueDate: DataTypes.DATEONLY,
-    completed: DataTypes.BOOLEAN,
-  }, {
-    sequelize,
-    modelName: 'Todo',
-  });
-  return Todo;
+
+        static getTodos() {
+            return this.findAll();
+
+        }
+
+        static async remove(id, UserId) {
+            return this.destroy({
+                where: {
+                    id,
+                    UserId,
+                },
+
+            })
+        }
+
+
+        static async isDueLater(UserId) {
+            return this.findAll({
+                where: {
+                    dueDate: {
+                        [Op.gt]: new Date().toISOString().split("T")[0],
+                    },
+                    UserId,
+                    completed: false,
+                },
+                order: [["id", "ASC"]],
+            });
+        }
+
+        static async isOverdue(UserId) {
+            return this.findAll({
+                where: {
+                    dueDate: {
+                        [Op.lt]: new Date().toISOString().split("T")[0],
+                    },
+                    completed: false,
+                    UserId,
+                },
+                order: [["id", "ASC"]],
+            });
+        }
+
+        static async isDueToday(UserId) {
+            return this.findAll({
+                where: {
+                    dueDate: {
+                        [Op.eq]: new Date().toISOString().split("T")[0],
+                    },
+                    UserId,
+                    completed: false,
+                },
+                order: [["id", "ASC"]],
+            });
+        }
+
+        static isCompleted(UserId) {
+            //In order to get only completed Todos
+            return this.findAll({
+                where: { completed: true },
+                UserId,
+                order: [["id", "ASC"]],
+            });
+        }
+    }
+    Todo.init(
+        {
+            title: DataTypes.STRING,
+            dueDate: DataTypes.DATEONLY,
+            completed: DataTypes.BOOLEAN,
+        },
+        {
+            sequelize,
+            modelName: "Todo",
+        }
+    );
+    return Todo;
 };
