@@ -1,84 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <title>TO-DO Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />   
     <meta name="csrf-token" content="<%= csrfToken %>" />
-    <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>To-Do Manager</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+
     <script>
-        var token = document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content");
+      var token = document
+  .querySelector('meta[name="csrf-token"]')
+  .getAttribute("content");
 
-        function updateTodo(id,status){
-            fetch(`/todos/${id}`,{
-                method:"put",
-                headers:{"Content-Type":"application/json"},
-                body: JSON.stringify({
-                    completed:status,
-                    "_csrf":token
-                })
-            })
-            .then((res) => {
-                if (res.ok) {
-                    window.location.reload();
-                }
-            })
-            .catch((err) => console.error(err));
-        }
+function updateTodo(id) {
+  let bool=document.querySelector(`#todo-checkbox-${id}`).checked
+  fetch(`/todos/${id}`, {
+    method: "put",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      _csrf: token,
+      completed : bool
+    }),
+  })
+    .then((res) => {
+      window.location.reload();
+    })
+    .catch((err) => console.error(err));
+}
 
-        function deleteTodo(id){
-            fetch(`/todos/${id}`,{
-                method:"delete",
-                headers:{"Content-Type":"application/json"},
-                body: JSON.stringify({
-                    "_csrf":token
-                })
-            })
-            .then((res) => {
-                if (res.ok){
-                    window.location.reload();
-                }
-            })
-            .catch((err)=>console.error(err));
-        }
+function deleteTodo(id) {
+  console.log(id);
+
+  fetch(`/todos/${id}`, {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      _csrf: token,
+    }),
+  })
+    .then((res) => {
+      window.location.reload();
+    })
+    .catch((err) => console.error(err));
+}
     </script>
-</head>
-<body>
-    <div class="grid grid-cols-6">
-        <div class="col-start-3 col-span-2">
-            <%- include('header.ejs') %>
-            <a href="/signout">Signout</a>
-            <form action="/todos" method="post">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                <div class="flex gap-2 py-4">
-                    <div class="flex-auto">
-                        <input type="text" name="title" placeholder="what's next?" class="border border-gray-300 text-gray-900 w-full rounded p-2 text-sm" required/>
-                    </div>
-                    <div class="flex-auto">
-                        <input type="date" name="dueDate" class="border border-gray-300 text-gray-900 w-full rounded p-2 text-sm leading-4" required>
-                    </div>
-                    <div class="flex-none">
-                        <button type="submit" class="bg-green-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">submit</button>
-                    </div>
-                </div>
-            </form>
-            <%- include('todo.ejs',{ "container" : "Overdue" , "id" : "count-overdue" , "todos" : Overdue }) %>
-            <%- include('todo.ejs',{ "container" : "Due Today" , "id" : "count-due-today" , "todos" : DueToday }) %>
-            <%- include('todo.ejs',{ "container" : "Due Later" , "id" : "count-due-later" , "todos" : DueLater }) %>
-            <%- include('todo.ejs',{ "container" : "Completed Items" , "id" : "count-completed" , "todos" : Complete }) %>
+  </head>
+</div>
+<body> 
+  <div class = "grid grid-cols-6">
+      <div class = "col-start-3 col-span-2">  
+        <table>
+          <%- include('header.ejs') %>
+          
 
-            <% if(messages && messages.error && messages.error.length> 0) { %>
-                <% for(var i=0; i<messages.error.length; i++) { %>
-                    <li>
-                        <%= messages.error[i] %><br>
-                    </li>
+          <div>
+            <form action="/todos" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <div class="flex gap-2 py-4">
+                <div class="flex-auto">
+                  <input
+                    type="text"
+                    placeholder="What's next?"
+                    name="title"
+                    class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm"
+                  />
+                </div>
+                <div class="flex-auto">
+                  <input
+                    type="date"
+                    name="dueDate"
+                    class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4	"
+                    
+                  />
+                </div>
+                <div class="flex-none">
+                  <button
+                    type="submit"
+                    class="bg-green-600	text-white px-5 py-1.5 rounded font-medium mr-2 mb-2"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <%- include("todo.ejs",{title:"Overdue", data:overdue , id:"count-overdue"}) %>
+          <%- include("todo.ejs",{title:"Due Today", data:dueToday, id:"count-due-today"}) %>
+          <%- include("todo.ejs",{title:"Due Later", data:dueLater, id:"count-due-later"}) %>
+          <%- include("todo.ejs",{title:"Completed Items", data:completedItems, id:"count-completed"}) %>
+          <br>
+            <% if (messages && messages.error && messages.error.length > 0)  { %>
+                <% var i = 0; %>
+                <% while (i < messages.error.length) { %>
+                    <p><%= messages.error[i] %></p>
+                  <% i++; %>
                 <% } %>
-            <% } %>
-        </div>
-    </div>
-    <%- include('footer.ejs') %>
-</body>
+              <% } %>
+
+        <br>
+          <%- include('footer.ejs') %>
+        
+          <div align="center" class="flex-none">
+            <a href="/signout" method="get" class="bg-green-600	text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">signout</a>
+          </div>
+        </table>
 </html>
