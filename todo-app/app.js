@@ -170,6 +170,7 @@ app.get("/login", (request, reponse) => {
   reponse.render("login", { title: "Login", csrfToken: request.csrfToken() });
 });
 
+
 app.post('/session', passport.authenticate('local', { failureRedirect: '/login' , failureFlash: true}),  function(request, response) {
   console.log(request.user)
 	response.redirect('/todos');
