@@ -2,21 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <meta name="csrf-token" content="<%= csrfToken %>">
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>To-Do APP</title>
+    <title> <%= title %></title>
 </head>
-<body>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh;">
     <div class="grid grid-cols-6">
-        <div class="col-start-3 col-span-2">
-            <%- include('header.ejs') %>
-            <p class="py-3 font-bold bg-blend-darken">Welcome to the To-Do Manager</p>
-            <p class="py-3 font-semibold">New here? <a href="/signup" class="text-green-600 italic">Sign-up </a></p>
-            <p class="py-3 font-semibold">Already have an account? <a href="/login" class="text-green-600 italic">Sign-in </a></p>
+        <div class="col-start-3 col-span-2" style="background: rgb(255, 255, 194); box-shadow: 1px 0px 3px 1px black; padding: 20px; border-radius: 4px;">
+            <%- include ('notifications.ejs') %>
+            <%- include ('header.ejs') %>
+            <p class="py-2 text-xl italic">A simple <span class="underline font-semibold">Todo manager</span> app for managing your tasks.</p>
+            <p class="py-2 text-lg"> New here? <a href="/signup" class="text-green-600 font-semibold hover:underline">Sign-up here</a></p>
+            <p class="py-2 text-lg"> Already have an account? <a href="/login" class="text-green-600 font-semibold hover:underline">Sign-in</a></p>
+            <%- include ('footer.ejs') %>
         </div>
     </div>
-    <%- include('footer.ejs') %>
 </body>
 </html>
