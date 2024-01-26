@@ -24,14 +24,27 @@ app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
 app.use(flash());
 
 
+
+
+
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+const store = new MongoDBStore({
+  uri: 'mongodb://localhost:27017/yourdb', // Replace with your MongoDB connection string
+  collection: 'sessions'
+});
+
 app.use(session({
+  store: store,
   secret: "my-super-secret-key-7218728182782818218782718",
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000,
-  },
- resave: false, // Set to false to avoid the deprecated warning
-  saveUninitialized: true, // Set to true to avoid the deprecated warning
+  resave: false,
+  saveUninitialized: false
 }));
+
+
+
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function (request, response, next) {
