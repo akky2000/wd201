@@ -8,7 +8,7 @@ var cookieParser = require("cookie-parser");
 const path = require("path");
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
-const session = require("express-session");
+
 const session = require('express-session');
 const LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
