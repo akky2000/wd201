@@ -9,6 +9,7 @@ const path = require("path");
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
 const session = require("express-session");
+const session = require('express-session');
 const LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
 const flash = require("connect-flash");
@@ -21,6 +22,20 @@ app.use(bodyParser.json());
 app.use(cookieParser("shh! some secret string"));
 app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
 app.use(flash());
+
+const RedisStore = require('connect-redis')(session);
+
+app.use(
+  session({
+    store: new RedisStore({
+      // Redis configuration options (host, port, etc.)
+    }),
+    secret: "my-super-secret-key-7218728182782818218782718",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 
 app.use(session({
   secret: "my-super-secret-key-7218728182782818218782718",
