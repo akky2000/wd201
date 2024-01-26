@@ -29,6 +29,8 @@ app.use(session({
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
   },
+ resave: false, // Set to false to avoid the deprecated warning
+  saveUninitialized: true, // Set to true to avoid the deprecated warning
 }));
 app.use(passport.initialize());
 app.use(passport.session());
