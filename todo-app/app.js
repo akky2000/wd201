@@ -30,7 +30,7 @@ app.use(flash());
 
 
 app.use(session({
-  store: store,
+  
   secret: "my-super-secret-key-7218728182782818218782718",
   resave: false,
   saveUninitialized: false
