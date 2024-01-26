@@ -27,12 +27,7 @@ app.use(flash());
 
 
 
-const MongoDBStore = require('connect-mongodb-session')(session);
 
-const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/yourdb', // Replace with your MongoDB connection string
-  collection: 'sessions'
-});
 
 app.use(session({
   store: store,
