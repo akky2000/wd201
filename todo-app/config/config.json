@@ -17,12 +17,20 @@
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
+  // config/config.json
+
+{
   "production": {
-    "username": "postgres",
-    "password": "akky123",
-    
-    "host": "127.0.0.1",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
-    "use_env_variable":"DATABASE_URL"
+    "ssl": true,
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
+}
+
 }
