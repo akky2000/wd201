@@ -1,100 +1,103 @@
-'use strict';
-const { Model, Op } = require('sequelize');
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+"use strict";
+const { Model, Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      // Define associations here if needed.
-      Todo.belongsTo(models.User,{
-        foreignKey:'userId'
-      })
+      // define association here
+      Todo.belongsTo(models.User, {
+        foreignKey: "userId",
+        onDelete: "CASCADE",
+      });
     }
 
-    static addTodo({ title, dueDate,userId }) {
-      return this.create({
-        title: title,
-        dueDate: dueDate,
-        completed: false,
-        userId
+    static async remove(id, userId) {
+      return this.destroy({
+        where: {
+          id,
+          userId,
+        },
       });
+    }
+
+    static getTodos() {
+      return this.findAll();
+    }
+
+    static addTodo({ title, dueDate, userId }) {
+      if (!title || !dueDate) {
+        console.log("Title and dueDate required");
+      } else {
+        return this.create({
+          title: title,
+          dueDate: dueDate,
+          completed: false,
+          userId,
+        });
+      }
     }
 
     markAsCompleted() {
       return this.update({ completed: true });
     }
 
-    static getTodos(userId) {
-      return this.findAll({
-        where:{
-          userId
-        }
-      });
-    }
-
-    static async dueLater(userId) {
-      return this.findAll({
-        where: {
-          dueDate: {
-            [Op.gt]: new Date().toISOString().split('T')[0],
-          },
-          userId,
-          completed: false,
-        },
-        order: [['id', 'ASC']],
-      });
-    }
-
-    static async overdue(userId) {
-      return this.findAll({
-        where: {
-          dueDate: {
-            [Op.lt]: new Date().toISOString().split('T')[0],
-          },
-          userId,
-          completed: false,
-        },
-        order: [['id', 'ASC']],
-      });
-    }
-
-    static async dueToday(userId) {
-      return this.findAll({
-        where: {
-          dueDate: {
-            [Op.eq]: new Date().toISOString().split('T')[0],
-          },
-        userId,
-        completed: false,
-      },
-        order: [['id', 'ASC']],
-      });
-    }
-
-    static async remove(id,userId) {
-      return this.destroy({
-        where: {
-          id: id,
-          userId,
-        },
-      });
-    }
-
-    deleteTodo() {
-      return this.removeTask();
-    }
-
-    static completed(userId) {
+    static completedItems(userId) {
       return this.findAll({
         where: {
           completed: true,
-          userId,
+          userId: userId,
         },
-        order: [['id', 'ASC']],
+        order: [["id", "ASC"]],
       });
     }
 
     setCompletionStatus(bool) {
       return this.update({ completed: bool });
+    }
+
+    static overdue(userId) {
+      return this.findAll({
+        where: {
+          dueDate: {
+            [Op.lt]: new Date().toLocaleDateString("en-CA"),
+          },
+          userId: userId,
+          completed: false,
+        },
+        order: [["id", "ASC"]],
+      });
+    }
+
+    static dueToday(userId) {
+      return this.findAll({
+        where: {
+          dueDate: {
+            [Op.eq]: new Date().toLocaleDateString("en-CA"),
+          },
+          userId: userId,
+          completed: false,
+        },
+        order: [["id", "ASC"]],
+      });
+    }
+
+    static dueLater(userId) {
+      return this.findAll({
+        where: {
+          dueDate: {
+            [Op.gt]: new Date().toLocaleDateString("en-CA"),
+          },
+          userId: userId,
+          completed: false,
+        },
+        order: [["id", "ASC"]],
+      });
     }
   }
 
@@ -106,9 +109,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Todo',
-    }
+      modelName: "Todo",
+    },
   );
-
   return Todo;
 };
