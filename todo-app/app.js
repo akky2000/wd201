@@ -155,16 +155,19 @@ app.post('/users', async (request, response) => {
     });
     request.login(user, (err)=> {
       
-  // Assuming this is the part of your code where the error occurs
-if (error && error.errors && error.errors.length > 0) {
+ if(err){
+        console.log(err);
+        response.redirect("/")
+      }
+      response.redirect('/todos');
+    })
+    
+  }
+  catch (error) {
+    console.log(error);
     request.flash("error", error.errors[0].message);
-} else {
-    // Handle the case where error.errors is not defined or empty
-    request.flash("error", "An unknown error occurred.");
-}
-
-// The rest of your error handling code...
-
+    response.redirect("/signup");
+  }
 
 });
 
@@ -193,39 +196,29 @@ app.get('/signout',(request,response, next) => {
   })
 })
 
-app.post('/todos', connectEnsureLogin.ensureLoggedIn(),async (request, response)=>{
-  if (!request.body.title) {
-    request.flash("error", "Please add title");
-    response.redirect("/todos");
-  }
-  if (!request.body.dueDate) {
-    request.flash("error", "Please add date");
-    response.redirect("/todos");
-  }
-
-  try {
+app.post("/todos",connectEnsureLogin.ensureLoggedIn(),async (req,res) => {
+    console.log("Creating a todo",req.body)
+    try {
+        const todo=await Todo.addTodo({title:req.body.title,dueDate:req.body.dueDate,userId:req.user.id})
+        return res.redirect("/")
+    }
+    catch(error) {
+        console.log(error)
+        return res.status(422).json(error)
+    }
     
-    console.log('entering in try block');
-    const todo =await Todo.addTodo({
-      title: request.body.title, 
-      dueDate: request.body.dueDate,
-      userId: request.user.id,
-    });
-    return response.redirect('/todos');
-  } catch (error) {
-    console.log(error);
-    return response.status(422).json(error);
-  }
-});  
+});
 
-app.put('/todos/:id', async (request, response) => {
-  const todo = await Todo.findByPk(request.params.id);
-  try {
-    const upTodo = await todo.setCompletionStatus(request.body.completed);
-    return response.json(upTodo);
-  } catch (error) {
-    return response.status(422).json(error);
-  }
+app.put("/todos/:id",connectEnsureLogin.ensureLoggedIn(),async (req,res) => {
+    console.log("We must update a todo with id:",req.params.id)
+    const todo=await Todo.findByPk(req.params.id)
+    try {
+        const updatedTodo=await todo.setCompletionStatus(req.body.completed)
+        return res.json(updatedTodo)
+    } catch(error) {
+        console.log(error)
+        return res.status(422).json(error)
+    }
 });
 
 app.delete('/todos/:id',connectEnsureLogin.ensureLoggedIn(), async function (request, response) {
