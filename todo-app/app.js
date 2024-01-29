@@ -23,8 +23,8 @@ app.use(session({
   secret:"my-super-secret-key-2121323131312",
   cookie:{
     maxAge:24*60*60*1000 //24hrs
-  }
-resave: false,
+  },
+   resave: false,
   saveUninitialized: false,
   
 }))
