@@ -24,6 +24,9 @@ app.use(session({
   cookie:{
     maxAge:24*60*60*1000 //24hrs
   }
+resave: false,
+  saveUninitialized: false,
+  
 }))
 
 app.use(function (request, response, next) {
