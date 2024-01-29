@@ -154,19 +154,17 @@ app.post('/users', async (request, response) => {
       password: encryptedPassword,
     });
     request.login(user, (err)=> {
-      if(err){
-        console.log(err);
-        response.redirect("/")
-      }
-      response.redirect('/todos');
-    })
-    
-  }
-  catch (error) {
-    console.log(error);
+      
+  // Assuming this is the part of your code where the error occurs
+if (error && error.errors && error.errors.length > 0) {
     request.flash("error", error.errors[0].message);
-    response.redirect("/signup");
-  }
+} else {
+    // Handle the case where error.errors is not defined or empty
+    request.flash("error", "An unknown error occurred.");
+}
+
+// The rest of your error handling code...
+
 
 });
 
