@@ -58,19 +58,33 @@ describe("Todo test suite", () => {
     expect(res.statusCode).toBe(302);
   })
 
-  test("create a new todo", async () => {
-    const agent = request.agent(server);
+  const request = require('supertest'); // Assuming you are using Supertest
+
+test("create a new todo", async () => {
+  try {
+    const agent = request.agent(server); // Assuming 'server' is your Express server
     await login(agent, "user@qqq.www", "133322");
+
+    // Assuming the /todos endpoint returns a page with a CSRF token
     const res = await agent.get("/todos");
     const csrfToken = extractCsrfToken(res);
-    response = await agent.post("/todos").send({
-        title: "Buy Milk",
-        dueDate: new Date().toISOString(),
-        completed: false,
-        _csrf: csrfToken,
+
+    // Assuming the /todos endpoint is responsible for creating a new todo
+    const response = await agent.post("/todos").send({
+      title: "Buy Milk",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
     });
+
     expect(response.statusCode).toBe(302);
-  })
+  } catch (error) {
+    // Handle errors (e.g., login failed, CSRF token extraction failed, etc.)
+    console.error("Test failed:", error.message);
+    throw error; // Rethrow the error to mark the test as failed
+  }
+});
+
 
   
 
